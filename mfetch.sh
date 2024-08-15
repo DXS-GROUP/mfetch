@@ -10,26 +10,63 @@ MAGENTA="\e[35m"
 CYAN="\e[36m"
 WHITE="\e[37m"
 
+# Функция для получения размеров терминала
+function get_terminal_size() {
+    local width
+    local height
+    width=$(tput cols)
+    height=$(tput lines)
+    echo "$width $height"
+}
+
+# Функция для центрирования текста
+function center_text() {
+    local text="$1"
+    local width=$(tput cols)
+    
+    # Удаляем управляющие последовательности для подсчета длины видимого текста
+    local visible_text=$(echo -e "$text" | sed -r "s/\x1B\[[0-9;]*m//g")
+    local text_length=${#visible_text}
+    
+    local padding=$(( (width - text_length) / 2 ))
+    printf "%${padding}s$text\n"
+}
+
+# Функция для вывода ASCII-арт
+function ascii_art() {
+    echo -e "${GREEN}"
+    center_text "     ,___  "
+    center_text "   _| () \\ "
+    center_text " /    --' "
+    center_text " \\\ __^/   "
+    echo -e "${RESET}"
+}
+
 function cpu_info() {
+    local cpu_percent
     cpu_percent=$(top -b -n 1 | grep "Cpu(s)" | awk '{print $2}')
-    echo -e "${MAGENTA}CPU: ${RESET}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - ${YELLOW}$((cpu_percent))%"
+    center_text "${MAGENTA}CPU: ${RESET}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - ${YELLOW}$((cpu_percent))%"
 }
 
 function memory_info() {
+    local total_mem
+    local used_mem
     total_mem=$(free | grep Mem | awk '{print $2}')
     used_mem=$(free | grep Mem | awk '{print $3}')
-    echo -e "${MAGENTA}RAM: ${RESET}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - ${YELLOW}$((used_mem * 100 / total_mem))%"
+    center_text "${MAGENTA}RAM: ${RESET}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - ${YELLOW}$((used_mem * 100 / total_mem))%"
 }
 
 function user_info() {
+    local username
+    local hostname
     username=$(whoami)
     hostname=$(hostname)
-    echo -e "${YELLOW}$username${WHITE}@${CYAN}$hostname${RESET}"
+    center_text "${YELLOW}$username${WHITE}@${CYAN}$hostname${RESET}"
 }
 
 function gpu_info() {
     if command -v lspci &> /dev/null; then
-        echo -e "${MAGENTA}GPU: ${RESET}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
+        center_text "${MAGENTA}GPU: ${RESET}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
     else
         echo "Error: lspci command not found."
         return 1
@@ -37,70 +74,75 @@ function gpu_info() {
 }
 
 function disk_info() {
+    local disk_usage
+    local disk_use
+    local disk_size
     disk_usage=$(df -h / | grep / | awk '{print $5}')
     disk_use=$(df -h / | grep / | awk '{print $3}')
     disk_size=$(df -h / | grep / | awk '{print $2}')
-    echo -e "${MAGENTA}Disk: ${RESET}$disk_use/$disk_size - ${YELLOW}$disk_usage"
+    center_text "${MAGENTA}Disk: ${RESET}$disk_use/$disk_size - ${YELLOW}$disk_usage"
 }
 
 function kernel_info() {
-    echo -e "${MAGENTA}Kernel: ${RESET}$(uname -r)"
+    center_text "${MAGENTA}Kernel: ${RESET}$(uname -r)"
 }
 
 function os_info() {
-    echo -e "${MAGENTA}OS: ${RESET}$(lsb_release -d | cut -f2)"
+    center_text "${MAGENTA}OS: ${RESET}$(lsb_release -d | cut -f2)"
 }
 
 function shell_info() {
-    echo -e "${MAGENTA}Shell: ${RESET}$SHELL"
+    center_text "${MAGENTA}Shell: ${RESET}$SHELL"
 }
 
 function wm_info() {
-    echo -e "${MAGENTA}WM: ${RESET}$(echo $XDG_CURRENT_DESKTOP)"
+    center_text "${MAGENTA}WM: ${RESET}$(echo $XDG_CURRENT_DESKTOP)"
 }
 
 function uptime_info() {
+    local uptime_seconds
     uptime_seconds=$(awk '{print $1}' /proc/uptime)
 
     uptime_seconds=${uptime_seconds%.*}
-    days=$((uptime_seconds / 86400))
-    hours=$(( (uptime_seconds % 86400) / 3600 ))
-    minutes=$(( (uptime_seconds % 3600) / 60 ))
+    local days=$((uptime_seconds / 86400))
+    local hours=$(( (uptime_seconds % 86400) / 3600 ))
+    local minutes=$(( (uptime_seconds % 3600) / 60 ))
 
-    echo -e "${MAGENTA}Uptime: ${RESET}$((days))d $((hours))h $((minutes))m"
+    center_text "${MAGENTA}Uptime: ${RESET}$((days))d $((hours))h $((minutes))m"
 }
 
 function colors_info() {
-    echo -e "${BLACK} ${RED} ${GREEN} ${YELLOW} ${BLUE} ${MAGENTA} ${CYAN} ${WHITE} "
+    center_text "${BLACK} ${RED} ${GREEN} ${YELLOW} ${BLUE} ${MAGENTA} ${CYAN} ${WHITE} "
 }
 
 function help_info() {
-    echo "Usage: $0 [--cpu] [--ram] [--gpu] [--disk] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors]"
+    center_text "Usage: $0 [--cpu] [--ram] [--gpu] [--disk] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors]"
 }
 
 if [ $# -eq 0 ]; then
-  user_info
-  os_info
-  wm_info
-  uptime_info
-  colors_info
+    ascii_art
+    user_info
+    os_info
+    wm_info
+    uptime_info
+    colors_info
 else
-  while [[ "$1" != "" ]]; do
-    case $1 in
-        --cpu ) cpu_info ;;
-        --ram ) memory_info ;;
-        --gpu ) gpu_info ;;
-        --disk ) disk_info ;;
-        --os ) os_info ;;
-        --shell ) shell_info ;;
-        --wm ) wm_info ;;
-        --uptime ) uptime_info ;;
-        --kernel ) kernel_info ;;
-        --user ) user_info ;;
-        --help ) help_info ;;
-        --colors ) colors_info ;;
-        * ) echo "Unknown option: $1" ;;
-    esac
-    shift
-  done
+    while [[ "$1" != "" ]]; do
+        case $1 in
+            --cpu ) cpu_info ;;
+            --ram ) memory_info ;;
+            --gpu ) gpu_info ;;
+            --disk ) disk_info ;;
+            --os ) os_info ;;
+            --shell ) shell_info ;;
+            --wm ) wm_info ;;
+            --uptime ) uptime_info ;;
+            --kernel ) kernel_info ;;
+            --user ) user_info ;;
+            --help ) help_info ;;
+            --colors ) colors_info ;;
+            * ) echo "Unknown option: $1" ;;
+        esac
+        shift
+    done
 fi
