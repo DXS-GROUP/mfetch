@@ -32,13 +32,33 @@ function center_text() {
     printf "%${padding}s$text\n"
 }
 
+# Функция для вертикального центрирования текста
+function vertical_center_text() {
+    local lines=("$@")
+    local height=$(tput lines)
+    local text_height=${#lines[@]}
+    
+    # Вычисляем количество пустых строк для вертикального центрирования
+    local padding=$(( (height - text_height) / 2 ))
+    
+    # Выводим пустые строки
+    for ((i=0; i<padding; i++)); do
+        echo
+    done
+    
+    # Выводим текст
+    for line in "${lines[@]}"; do
+        center_text "$line"
+    done
+}
+
 # Функция для вывода ASCII-арт
 function ascii_art() {
-    echo -e "${GREEN}"
-    center_text "     ,___  "
-    center_text "   _| () \\ "
-    center_text " /    --' "
-    center_text " \\\ __^/   "
+    vertical_center_text \
+        "${GREEN}     ,___  " \
+        "   _| () \\ " \
+        " /    --' " \
+        " \\\ __^/   "
     echo -e "${RESET}"
 }
 
