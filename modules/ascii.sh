@@ -6,7 +6,7 @@ function ascii_art() {
     # os_name="Endeavouros Linux"
 
     case "$os_name" in
-        "Open Suse Linux")
+        "openSUSE Linux" | "openSUSE Tumbleweed" | "openSUSE")
             center_text "${GREEN_BG}                ${RESET_BG}"
             center_text "${GREEN_BG}      ,___      ${RESET_BG}"
             center_text "${GREEN_BG}    _| () \     ${RESET_BG}"
@@ -62,7 +62,7 @@ function ascii_art() {
             center_text "${RED_BG}    | |  | |    ${RESET_BG}"
             center_text "${RED_BG}     \ -- /     ${RESET_BG}"
             center_text "${RED_BG}       ''       ${RESET_BG}";;
-        "OS X")
+        "MacOS Big Sur" | "MacOS Monterey" | "MacOS catalina" | "macOS high-sierra" | "macOS Mojave" | "macOS mountain lion" | "macOS mojave" | "macOS big sur" | "macOS catalina" | "macOS mojave" | "macOS yosemite")
             center_text "${GREEN_BG}                ${RESET_BG}"
             center_text "${GREEN_BG}     _//_      ${RESET_BG}"
             center_text "${GREEN_BG}   /  '' \     ${RESET_BG}"
