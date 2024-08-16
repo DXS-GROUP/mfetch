@@ -82,7 +82,7 @@ function colors_info() {
 }
 
 function help_info() {
-    printf "Usage: $0 [--logo] [--cpu] [--ram] [--gpu] [--disk] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors]"
+    printf "Usage: $0 [--logo] [--cpu] [--ram] [--gpu] [--disk] [--ip] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors]"
 }
 
 function package_manager_info() {
