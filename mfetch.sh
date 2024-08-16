@@ -15,6 +15,7 @@ if [ $# -eq 0 ]; then
     colors_info
     user_info
     wm_info
+    ip_info
     os_info
     package_manager_info
     uptime_info
@@ -35,6 +36,7 @@ else
             --help ) help_info ;;
             --colors ) colors_info ;;
             --pkgs ) package_manager_info;;
+            --ip ) ip_info;;
             * ) echo "Unknown option: $1" ;;
         esac
         shift

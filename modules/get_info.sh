@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function ip_info() {
+    IP=$(curl --silent ifconfig.me)
+    center_text "${BLUE}${IP_ICO} IP: ${WHITE}$IP"
+}
+
 function cpu_info() {
     local cpu_percent
     cpu_percent=$(top -b -n 1 | grep "Cpu(s)" | awk '{print $2}')
