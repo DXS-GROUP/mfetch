@@ -3,7 +3,7 @@
 function cpu_info() {
     local cpu_percent
     cpu_percent=$(top -b -n 1 | grep "Cpu(s)" | awk '{print $2}')
-    center_text "${CYAN}${CPU} CPU: ${RESET}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $((cpu_percent))%"
+    center_text "${BLUE}${CPU} CPU: ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $((cpu_percent))%"
 }
 
 function memory_info() {
@@ -11,7 +11,7 @@ function memory_info() {
     local used_mem
     total_mem=$(free | grep Mem | awk '{print $2}')
     used_mem=$(free | grep Mem | awk '{print $3}')
-    center_text "${CYAN}${RAM} RAM: ${RESET}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
+    center_text "${BLUE}${RAM} RAM: ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
 }
 
 function user_info() {
@@ -19,13 +19,13 @@ function user_info() {
     local hostname
     username=$(whoami)
     hostname=$(hostname)
-    center_text "${CYAN}${USER} $username@$hostname${RESET}"
+    center_text "${BLUE}${USER} $username@$hostname${WHITE}"
     printf "\n"
 }
 
 function gpu_info() {
     if command -v lspci &> /dev/null; then
-        center_text "${CYAN}${GPU} GPU: ${RESET}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
+        center_text "${BLUE}${GPU} GPU: ${WHITE}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
     else
         echo "Error: lspci command not found."
         return 1
@@ -39,24 +39,24 @@ function disk_info() {
     disk_usage=$(df -h / | grep / | awk '{print $5}')
     disk_use=$(df -h / | grep / | awk '{print $3}')
     disk_size=$(df -h / | grep / | awk '{print $2}')
-    center_text "${CYAN}${DISK} Disk: ${RESET}$disk_use/$disk_size - $disk_usage"
+    center_text "${BLUE}${DISK} Disk: ${WHITE}$disk_use/$disk_size - $disk_usage"
 }
 
 function kernel_info() {
-    center_text "${CYAN}${KERNEL} Kernel: ${RESET}$(uname -r)"
+    center_text "${BLUE}${KERNEL} Kernel: ${WHITE}$(uname -r)"
 }
 
 function os_info() {
-    center_text "${CYAN}${OS} OS: ${RESET}$(lsb_release -d | cut -f2)"
-    # center_text "${CYAN}${OS} OS: ${RESET}Endeavouros Linux"
+    center_text "${BLUE}${OS} OS: ${WHITE}$(lsb_release -d | cut -f2)"
+    # center_text "${BLUE}${OS} OS: ${WHITE}Endeavouros Linux"
 }
 
 function shell_info() {
-    center_text "${CYAN}${SHELL_ICO} Shell: ${RESET}$SHELL"
+    center_text "${BLUE}${SHELL_ICO} Shell: ${WHITE}$SHELL"
 }
 
 function wm_info() {
-    center_text "${CYAN}${WM} WM: ${RESET}$(echo $XDG_CURRENT_DESKTOP)"
+    center_text "${BLUE}${WM} WM: ${WHITE}$(echo $XDG_CURRENT_DESKTOP)"
 }
 
 function uptime_info() {
@@ -68,7 +68,7 @@ function uptime_info() {
     local hours=$(( (uptime_seconds % 86400) / 3600 ))
     local minutes=$(( (uptime_seconds % 3600) / 60 ))
 
-    center_text "${CYAN}${UPTIME} Uptime: ${RESET}$((days))d $((hours))h $((minutes))m"
+    center_text "${BLUE}${UPTIME} Uptime: ${WHITE}$((days))d $((hours))h $((minutes))m"
 }
 
 function colors_info() {
@@ -104,5 +104,5 @@ function package_manager_info() {
         return 1
     fi
 
-    center_text "${CYAN}${PKGS} PKGS: ${RESET}$package_count - $package_manager"
+    center_text "${BLUE}${PKGS} PKGS: ${WHITE}$package_count - $package_manager"
 }
