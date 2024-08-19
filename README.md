@@ -12,7 +12,7 @@
 <img class="badge" src="https://img.shields.io/github/stars/DXS-GROUP/mfetch?style=for-the-badge&color=eed49f&logoColor=D9E0EE&labelColor=1c1c29" style="border-radius: 5px;"/>
 <img class="badge" src="https://img.shields.io/github/forks/DXS-GROUP/mfetch?style=for-the-badge&color=9dc3ea&logoColor=D9E0EE&labelColor=1c1c29"  style="border-radius: 5px;"/>
 <br><br><br>
-<img src="images/arch.png">
+<img src="images/1.png" width="70%">
 
 <h3>Usage</h3>
 </div>
@@ -23,7 +23,8 @@ cd mfetch
 mv mfetch.sh mfetch && chmod +x mfetch
 
 ./mfetch
-Usage: ./mfetch [--logo] [--cpu] [--ram] [--gpu] [--disk] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors]
+
+Usage: mfetch [--labels] [--logo] [--cpu] [--ram] [--gpu] [--disk] [--ip] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors] [--resol] [--song]
 ```
 
 <div align="center">
@@ -31,48 +32,8 @@ Usage: ./mfetch [--logo] [--cpu] [--ram] [--gpu] [--disk] [--os] [--shell] [--wm
 
 <details>
 <summary>Gallery</summary>
-    <br>
-    <img src="images/arch.png" width="60%">
-    <br>
-    <img src="images/full.png" width="60%">
-    <br>
-    <img src="images/help.png" width="60%">
-    <br>
-    <img src="images/solarize.png" width="60%">
+    <img src="images/1.png" width="50%" />
+    <img src="images/2.png" width="50%" />
+    <img src="images/arch.png" width="50%" />
+    <img src="images/endev.png" width="50%" />
 </details>
-
-<br><br>
-
-<details>
-<summary>Systems</summary>
-
-<h3>arch</h3>
-
-<img src="images/arch.png" width="60%">
-
-<h3>alpine</h3>
-
-<img src="images/alpine.png" width="60%">
-
-<h3>bedrock</h3>
-
-<img src="images/bedrock.png" width="60%">
-
-<h3>debian</h3>
-
-<img src="images/debian.png" width="60%">
-
-<h3>endeavouros</h3>
-
-<img src="images/endev.png" width="60%">
-
-<h3>manjaro</h3>
-
-<img src="images/manjaro.png" width="60%">
-
-<h3>open suse</h3>
-
-<img src="images/suse.png" width="60%">
-</details>
-
-</div>
