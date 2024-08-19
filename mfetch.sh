@@ -345,18 +345,18 @@ function package_manager_info() {
     fi
 }
 
-function print_info() {
-    if [ $# -eq 0 ]; then
-        ascii_art
-        colors_info
-        user_info
-        wm_info
-        ip_info
-        os_info
-        package_manager_info
-        uptime_info
-        show_screen_resolutions
-    else
+
+if [ $# -eq 0 ]; then
+    ascii_art
+    colors_info
+    user_info
+    wm_info
+    ip_info
+    os_info
+    package_manager_info
+    uptime_info
+    show_screen_resolutions
+else
     while [[ "$1" != "" ]]; do
         case $1 in
             --labels ) show_labels=true ;;
@@ -380,13 +380,6 @@ function print_info() {
         esac
         shift
     done
-    fi
-}
-
-function _main() {
-    print_info
-}
-
-_main
+fi
 
 read -n1 -r -s -p " "
