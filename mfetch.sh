@@ -13,6 +13,7 @@ USER=""
 HELP=""
 PKGS=""
 IP_ICO=""
+RESOL_ICO=""
 
 RESET="\e[0m"
 BLACK="\e[1;30m"
@@ -34,6 +35,7 @@ MAGENTA_BG="\e[7;35m"
 CYAN_BG="\e[7;36m"
 WHITE_BG="\e[7;37m"
 
+show_labels=false
 
 clear
 
@@ -58,7 +60,7 @@ function center_text() {
         is_odd=`expr $line_length % 2 == 1`
         half_of_line_length=`expr $half_of_line_length + $is_odd`
         center=`expr \( $cols / 2 \) - $half_of_line_length`
-        
+
         spaces=""
         for ((i=0; i < $center; i++)) {
             spaces+=" "
@@ -168,15 +170,42 @@ function ascii_art() {
     center_text "${RESET_BG}             ${RESET_BG}"
 }
 
+function show_screen_resolutions() {
+    screens=$(xrandr | grep ' connected' | awk '{ print $1 }')
+
+    if [ -z "$screens" ]; then
+        echo ""
+        return
+    fi
+
+    for screen in $screens; do
+        resolution=$(xrandr | grep -A1 "$screen" | grep '*' | awk '{print $1}')
+        if [ "$show_labels" = true ]; then
+            center_text "${BLUE}${RESOL_ICO} $screen: ${WHITE} $resolution"
+        else
+            center_text "${BLUE}${RESOL_ICO} : ${WHITE} $resolution"
+        fi
+    done
+}
+
 function ip_info() {
     IP=$(curl --silent ifconfig.me)
-    center_text "${BLUE}${IP_ICO} IP: ${WHITE}$IP"
+
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${IP_ICO} IP: ${WHITE}$IP"
+    else
+        center_text "${BLUE}${IP_ICO} : ${WHITE}$IP"
+    fi
 }
 
 function cpu_info() {
     local cpu_percent
     cpu_percent=$(top -b -n 1 | grep "Cpu(s)" | awk '{print $2}')
-    center_text "${BLUE}${CPU} CPU: ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent%"
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${CPU} CPU: ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent%"
+    else
+        center_text "${BLUE}${CPU} : ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent%"
+    fi
 }
 
 function memory_info() {
@@ -184,7 +213,11 @@ function memory_info() {
     local used_mem
     total_mem=$(free | grep Mem | awk '{print $2}')
     used_mem=$(free | grep Mem | awk '{print $3}')
-    center_text "${BLUE}${RAM} RAM: ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${RAM} RAM: ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
+    else
+        center_text "${BLUE}${RAM} : ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
+    fi
 }
 
 function user_info() {
@@ -198,7 +231,11 @@ function user_info() {
 
 function gpu_info() {
     if command -v lspci &> /dev/null; then
-        center_text "${BLUE}${GPU} GPU: ${WHITE}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
+        if [ "$show_labels" = true ]; then
+            center_text "${BLUE}${GPU} GPU: ${WHITE}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
+        else
+            center_text "${BLUE}${GPU} : ${WHITE}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
+        fi
     else
         echo "Error: lspci command not found."
         return 1
@@ -212,24 +249,44 @@ function disk_info() {
     disk_usage=$(df -h / | grep / | awk '{print $5}')
     disk_use=$(df -h / | grep / | awk '{print $3}')
     disk_size=$(df -h / | grep / | awk '{print $2}')
-    center_text "${BLUE}${DISK} Disk: ${WHITE}$disk_use/$disk_size - $disk_usage"
+
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${DISK} Disk: ${WHITE}$disk_use/$disk_size - $disk_usage"
+    else
+        center_text "${BLUE}${DISK} : ${WHITE}$disk_use/$disk_size - $disk_usage"
+    fi
 }
 
 function kernel_info() {
-    center_text "${BLUE}${KERNEL} Kernel: ${WHITE}$(uname -r)"
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${KERNEL} Kernel: ${WHITE}$(uname -r)"
+    else
+        center_text "${BLUE}${KERNEL} : ${WHITE}$(uname -r)"
+    fi
 }
 
 function os_info() {
-    center_text "${BLUE}${OS} OS: ${WHITE}$(lsb_release -d | cut -f2)"
-    # center_text "${BLUE}${OS} OS: ${WHITE}Endeavouros Linux"
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${OS} OS: ${WHITE}$(lsb_release -d | cut -f2)"
+    else
+        center_text "${BLUE}${OS} : ${WHITE}$(lsb_release -d | cut -f2)"
+    fi
 }
 
 function shell_info() {
-    center_text "${BLUE}${SHELL_ICO} Shell: ${WHITE}$SHELL"
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${SHELL_ICO} Shell: ${WHITE}$SHELL"
+    else
+        center_text "${BLUE}${SHELL_ICO} : ${WHITE}$SHELL"
+    fi
 }
 
 function wm_info() {
-    center_text "${BLUE}${WM} WM: ${WHITE}$(echo $XDG_CURRENT_DESKTOP)"
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${WM} WM: ${WHITE}$(echo $XDG_CURRENT_DESKTOP)"
+    else
+        center_text "${BLUE}${WM} : ${WHITE}$(echo $XDG_CURRENT_DESKTOP)"
+    fi
 }
 
 function uptime_info() {
@@ -241,7 +298,11 @@ function uptime_info() {
     local hours=$(( (uptime_seconds % 86400) / 3600 ))
     local minutes=$(( (uptime_seconds % 3600) / 60 ))
 
-    center_text "${BLUE}${UPTIME} Uptime: ${WHITE}$((days))d $((hours))h $((minutes))m"
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${UPTIME} Uptime: ${WHITE}$((days))d $((hours))h $((minutes))m"
+    else
+        center_text "${BLUE}${UPTIME} : ${WHITE}$((days))d $((hours))h $((minutes))m"
+    fi
 }
 
 function colors_info() {
@@ -250,7 +311,7 @@ function colors_info() {
 }
 
 function help_info() {
-    printf "Usage: $0 [--logo] [--cpu] [--ram] [--gpu] [--disk] [--ip] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors]"
+    printf "Usage: $0 [--labels] [--logo] [--cpu] [--ram] [--gpu] [--disk] [--ip] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors] [--resol]"
 }
 
 function package_manager_info() {
@@ -277,7 +338,11 @@ function package_manager_info() {
         return 1
     fi
 
-    center_text "${BLUE}${PKGS} PKGS: ${WHITE}$package_count - $package_manager"
+    if [ "$show_labels" = true ]; then
+        center_text "${BLUE}${PKGS} PKGS: ${WHITE}$package_count - $package_manager"
+    else
+        center_text "${BLUE}${PKGS} : ${WHITE}$package_count - $package_manager"
+    fi
 }
 
 
@@ -290,9 +355,11 @@ if [ $# -eq 0 ]; then
     os_info
     package_manager_info
     uptime_info
+    show_screen_resolutions
 else
     while [[ "$1" != "" ]]; do
         case $1 in
+            --labels ) show_labels=true ;;
             --logo ) ascii_art;;
             --cpu ) cpu_info ;;
             --ram ) memory_info ;;
@@ -308,6 +375,7 @@ else
             --colors ) colors_info ;;
             --pkgs ) package_manager_info;;
             --ip ) ip_info;;
+            --resol ) show_screen_resolutions;;
             * ) echo "Unknown option: $1" ;;
         esac
         shift
