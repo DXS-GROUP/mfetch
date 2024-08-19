@@ -313,7 +313,7 @@ function colors_info() {
 }
 
 function help_info() {
-    printf "Usage: $0 [--labels] [--logo] [--cpu] [--ram] [--gpu] [--disk] [--ip] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors] [--resol] [--song]"
+    echo "Usage: $0 [--labels] [--logo] [--cpu] [--ram] [--gpu] [--disk] [--ip] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors] [--resol] [--song]"
 }
 
 function package_manager_info() {
@@ -393,7 +393,7 @@ function get_current_song() {
     title="${title:-Unknown Song}"
 
     if [ "$show_labels" = true ]; then
-        center_text "${BLUE}${MUSIC} SONG: ${artist} - ${album} - ${title}"
+        center_text "${BLUE}${MUSIC} SONG: ${artist} - ${title}"
     else
         center_text "${BLUE}${MUSIC}  ${WHITE}${artist} - ${title}"
     fi
