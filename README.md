@@ -34,6 +34,7 @@ Usage: mfetch [--labels] [--logo] [--cpu] [--ram] [--gpu] [--disk] [--ip] [--os]
 <summary>Gallery</summary>
     <img src="images/1.png" width="50%" />
     <img src="images/2.png" width="50%" />
+    <img src="images/3.png" width="50%" />
     <img src="images/arch.png" width="50%" />
     <img src="images/endev.png" width="50%" />
 </details>
