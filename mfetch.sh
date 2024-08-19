@@ -194,7 +194,7 @@ function ip_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${IP_ICO} IP: ${WHITE}$IP"
     else
-        center_text "${BLUE}${IP_ICO} : ${WHITE}$IP"
+        center_text "${BLUE}${IP_ICO}  ${WHITE}$IP"
     fi
 }
 
@@ -204,7 +204,7 @@ function cpu_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${CPU} CPU: ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent%"
     else
-        center_text "${BLUE}${CPU} : ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent%"
+        center_text "${BLUE}${CPU}  ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent%"
     fi
 }
 
@@ -216,7 +216,7 @@ function memory_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${RAM} RAM: ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
     else
-        center_text "${BLUE}${RAM} : ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
+        center_text "${BLUE}${RAM}  ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
     fi
 }
 
@@ -234,7 +234,7 @@ function gpu_info() {
         if [ "$show_labels" = true ]; then
             center_text "${BLUE}${GPU} GPU: ${WHITE}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
         else
-            center_text "${BLUE}${GPU} : ${WHITE}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
+            center_text "${BLUE}${GPU}  ${WHITE}$(lspci | grep -i vga | cut -d: -f3- | sed 's/^.*\[\(.*\)\].*$/\1/')"
         fi
     else
         echo "Error: lspci command not found."
@@ -253,7 +253,7 @@ function disk_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${DISK} Disk: ${WHITE}$disk_use/$disk_size - $disk_usage"
     else
-        center_text "${BLUE}${DISK} : ${WHITE}$disk_use/$disk_size - $disk_usage"
+        center_text "${BLUE}${DISK}  ${WHITE}$disk_use/$disk_size - $disk_usage"
     fi
 }
 
@@ -261,7 +261,7 @@ function kernel_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${KERNEL} Kernel: ${WHITE}$(uname -r)"
     else
-        center_text "${BLUE}${KERNEL} : ${WHITE}$(uname -r)"
+        center_text "${BLUE}${KERNEL}  ${WHITE}$(uname -r)"
     fi
 }
 
@@ -269,7 +269,7 @@ function os_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${OS} OS: ${WHITE}$(lsb_release -d | cut -f2)"
     else
-        center_text "${BLUE}${OS} : ${WHITE}$(lsb_release -d | cut -f2)"
+        center_text "${BLUE}${OS}  ${WHITE}$(lsb_release -d | cut -f2)"
     fi
 }
 
@@ -277,7 +277,7 @@ function shell_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${SHELL_ICO} Shell: ${WHITE}$SHELL"
     else
-        center_text "${BLUE}${SHELL_ICO} : ${WHITE}$SHELL"
+        center_text "${BLUE}${SHELL_ICO}  ${WHITE}$SHELL"
     fi
 }
 
@@ -285,7 +285,7 @@ function wm_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${WM} WM: ${WHITE}$(echo $XDG_CURRENT_DESKTOP)"
     else
-        center_text "${BLUE}${WM} : ${WHITE}$(echo $XDG_CURRENT_DESKTOP)"
+        center_text "${BLUE}${WM}  ${WHITE}$(echo $XDG_CURRENT_DESKTOP)"
     fi
 }
 
@@ -301,12 +301,12 @@ function uptime_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${UPTIME} Uptime: ${WHITE}$((days))d $((hours))h $((minutes))m"
     else
-        center_text "${BLUE}${UPTIME} : ${WHITE}$((days))d $((hours))h $((minutes))m"
+        center_text "${BLUE}${UPTIME}  ${WHITE}$((days))d $((hours))h $((minutes))m"
     fi
 }
 
 function colors_info() {
-    center_text "${BLACK_BG}     ${RED_BG}     ${GREEN_BG}     ${BLUE_BG}     ${CYAN_BG}     ${WHITE_BG}     ${RESET_BG}"
+    center_text "${BLACK_BG}    ${RED_BG}    ${GREEN_BG}    ${BLUE_BG}    ${CYAN_BG}    ${WHITE_BG}    ${RESET_BG}"
     printf "\n"
 }
 
@@ -341,7 +341,7 @@ function package_manager_info() {
     if [ "$show_labels" = true ]; then
         center_text "${BLUE}${PKGS} PKGS: ${WHITE}$package_count - $package_manager"
     else
-        center_text "${BLUE}${PKGS} : ${WHITE}$package_count - $package_manager"
+        center_text "${BLUE}${PKGS}  ${WHITE}$package_count - $package_manager"
     fi
 }
 
