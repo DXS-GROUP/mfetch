@@ -67,7 +67,9 @@ function center_text() {
         for ((i=0; i < $center; i++)) {
             spaces+=" "
         }
-        echo "$spaces$line"
+        printf "${spaces}${line}"
+        echo
+
     done
 }
 
@@ -94,8 +96,6 @@ vertical_center_text
 
 function ascii_art() {
     os_name="$(lsb_release -d | cut -f2)"
-
-    # os_name="Endeavouros Linux"
 
     case "$os_name" in
         "openSUSE Linux" | "openSUSE Tumbleweed" | "openSUSE")
@@ -172,6 +172,7 @@ function ascii_art() {
     center_text "${RESET_BG}             ${RESET_BG}"
 }
 
+
 function show_screen_resolutions() {
     screens=$(xrandr | grep ' connected' | awk '{ print $1 }')
 
@@ -204,9 +205,9 @@ function cpu_info() {
     local cpu_percent
     cpu_percent=$(top -b -n 1 | grep "Cpu(s)" | awk '{print $2}')
     if [ "$show_labels" = true ]; then
-        center_text "${BLUE}${CPU} CPU: ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent%"
+        center_text "${BLUE}${CPU} CPU: ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent"
     else
-        center_text "${BLUE}${CPU}  ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent%"
+        center_text "${BLUE}${CPU}  ${WHITE}$(cat /proc/cpuinfo | grep 'model name' | uniq | cut -d: -f2 | awk '{print $5}') - $cpu_percent"
     fi
 }
 
@@ -216,9 +217,9 @@ function memory_info() {
     total_mem=$(free | grep Mem | awk '{print $2}')
     used_mem=$(free | grep Mem | awk '{print $3}')
     if [ "$show_labels" = true ]; then
-        center_text "${BLUE}${RAM} RAM: ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
+        center_text "${BLUE}${RAM} RAM: ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))"
     else
-        center_text "${BLUE}${RAM}  ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))%"
+        center_text "${BLUE}${RAM}  ${WHITE}$((used_mem/1024/1024)) GB / $((total_mem/1024/1024)) GB - $((used_mem * 100 / total_mem))"
     fi
 }
 
@@ -402,20 +403,24 @@ function get_current_song() {
 
 
 if [ $# -eq 0 ]; then
+    # Если аргументы не переданы, выводим всю информацию
     ascii_art
-    colors_info
+
     user_info
     wm_info
     ip_info
     os_info
     package_manager_info
     uptime_info
-    show_screen_resolutions
+    get_current_song
+
+    colors_info
 else
+    # Обработка переданных аргументов
     while [[ "$1" != "" ]]; do
         case $1 in
             --labels ) show_labels=true ;;
-            --logo ) ascii_art;;
+            --logo ) ascii_art ;;
             --cpu ) cpu_info ;;
             --ram ) memory_info ;;
             --gpu ) gpu_info ;;
@@ -428,14 +433,14 @@ else
             --user ) user_info ;;
             --help ) help_info ;;
             --colors ) colors_info ;;
-            --pkgs ) package_manager_info;;
-            --ip ) ip_info;;
-            --resol ) show_screen_resolutions;;
-            --song ) get_current_song;;
+            --pkgs ) package_manager_info ;;
+            --ip ) ip_info ;;
+            --resol ) show_screen_resolutions ;;
+            --song ) get_current_song ;;
             * ) echo "Unknown option: $1" ;;
         esac
-        shift
+        shift # Переход к следующему аргументу
     done
 fi
 
-read -n1 -r -s -p " "
+# read -n1 -r -s -p " "
