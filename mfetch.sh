@@ -384,7 +384,7 @@ function get_current_song() {
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
         "mpd"*)           song="$(mpc -f '%artist% \n%album% \n%title%' current)" ;;
         "mopidy"*)        song="$(mpc -f '%artist% \n%album% \n%title%' current)" ;;
-        *)                echo "Неизвестный или не поддерживаемый плеер." && return ;;
+        *)                center_text "${BLUE}${MUSIC} " && return ;;
     esac
 
     IFS=$'\n' read -d "" artist album title <<< "${song//'\n'/$'\n'}"
