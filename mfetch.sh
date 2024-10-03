@@ -443,4 +443,4 @@ else
     done
 fi
 
-# read -n1 -r -s -p " "
+read -n1 -r -s -p " "
