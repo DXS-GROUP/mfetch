@@ -92,10 +92,11 @@ function vertical_center_text() {
     echo -e "$lines$text$lines"
 }
 
-vertical_center_text
+#vertical_center_text
 
 function ascii_art() {
     os_name="$(lsb_release -d | cut -f2)"
+    # os_name="openSUSE Linux"
 
     case "$os_name" in
         "openSUSE Linux" | "openSUSE Tumbleweed" | "openSUSE")
@@ -155,7 +156,7 @@ function ascii_art() {
             center_text "${RED_BG}     \ -- /     ${RESET_BG}"
             center_text "${RED_BG}       ''       ${RESET_BG}";;
         "MacOS Big Sur" | "MacOS Monterey" | "MacOS catalina" | "macOS high-sierra" | "macOS Mojave" | "macOS mountain lion" | "macOS mojave" | "macOS big sur" | "macOS catalina" | "macOS mojave" | "macOS yosemite")
-            center_text "${GREEN_BG}                ${RESET_BG}"
+            center_text "${GREEN_BG}               ${RESET_BG}"
             center_text "${GREEN_BG}     _//_      ${RESET_BG}"
             center_text "${GREEN_BG}   /  '' \     ${RESET_BG}"
             center_text "${GREEN_BG}   |    (      ${RESET_BG}"
@@ -314,6 +315,16 @@ function colors_info() {
 }
 
 function help_info() {
+echo -e "${RED} ███▄ ▄███▓  █████▒▓█████▄▄▄█████▓ ▄████▄   ██░ ██ "
+echo -e "▓██▒▀█▀ ██▒▓██   ▒ ▓█   ▀▓  ██▒ ▓▒▒██▀ ▀█  ▓██░ ██▒"
+echo -e "▓██    ▓██░▒████ ░ ▒███  ▒ ▓██░ ▒░▒▓█    ▄ ▒██▀▀██░"
+echo -e "▒██    ▒██ ░▓█▒  ░ ▒▓█  ▄░ ▓██▓ ░ ▒▓▓▄ ▄██▒░▓█ ░██ "
+echo -e "▒██▒   ░██▒░▒█░    ░▒████▒ ▒██▒ ░ ▒ ▓███▀ ░░▓█▒░██▓"
+echo -e "░ ▒░   ░  ░ ▒ ░    ░░ ▒░ ░ ▒ ░░   ░ ░▒ ▒  ░ ▒ ░░▒░▒"
+echo -e "░  ░      ░ ░       ░ ░  ░   ░      ░  ▒    ▒ ░▒░ ░"
+echo -e "░      ░    ░ ░       ░    ░      ░         ░  ░░ ░"
+echo -e "       ░              ░  ░        ░ ░       ░  ░  ░"
+echo -e "                                  ░         ${GREEN}"       
     echo "Usage: $0 [--labels] [--logo] [--cpu] [--ram] [--gpu] [--disk] [--ip] [--os] [--shell] [--wm] [--uptime] [--kernel] [--user] [--help] [--colors] [--resol] [--song]"
 }
 
@@ -400,10 +411,9 @@ function get_current_song() {
     fi
 }
 
-
+echo -e "\n\n\n"
 
 if [ $# -eq 0 ]; then
-    # Если аргументы не переданы, выводим всю информацию
     ascii_art
 
     user_info
@@ -412,11 +422,9 @@ if [ $# -eq 0 ]; then
     os_info
     package_manager_info
     uptime_info
-    get_current_song
 
     colors_info
 else
-    # Обработка переданных аргументов
     while [[ "$1" != "" ]]; do
         case $1 in
             --labels ) show_labels=true ;;
@@ -432,6 +440,7 @@ else
             --kernel ) kernel_info ;;
             --user ) user_info ;;
             --help ) help_info ;;
+            -h ) help_info ;;
             --colors ) colors_info ;;
             --pkgs ) package_manager_info ;;
             --ip ) ip_info ;;
@@ -439,8 +448,8 @@ else
             --song ) get_current_song ;;
             * ) echo "Unknown option: $1" ;;
         esac
-        shift # Переход к следующему аргументу
+        shift
     done
 fi
 
-read -n1 -r -s -p " "
+#read -n1 -r -s -p " "
